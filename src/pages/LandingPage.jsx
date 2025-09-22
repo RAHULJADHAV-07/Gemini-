@@ -1,5 +1,5 @@
 import React from 'react';
-import { Brain, Star, Zap, Award, ArrowRight, Target, Users, Lightbulb } from 'lucide-react';
+import { Brain, Award, ArrowRight, Target, Users, Lightbulb } from 'lucide-react';
 
 /**
  * LandingPage Component

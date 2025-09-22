@@ -54,65 +54,63 @@ const CertificatePage = ({ studentName, onGoToLessons, onStartOver }) => {
       const timesBold = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
       
       // Define colors for text
-      const darkBlue = rgb(0.1, 0.2, 0.5);
       const black = rgb(0, 0, 0);
-      const darkGray = rgb(0.3, 0.3, 0.3);
       
-      // **PRECISELY POSITIONED COORDINATES FOR GOOGLE CERTIFICATE**
-      // Based on analysis of the generated certificate showing misaligned text
+      // **RESPONSIVE POSITIONING FOR ANY PDF SIZE**
+      // Calculate responsive positions based on page dimensions
+      const centerX = width / 2;
       
-      // Student Name - positioned in the blue name area (centered under "This is to certify that")
-      const nameWidth = studentName.length * 11;
+      // Student Name - positioned where the blank line is in "This is to certify that [NAME]"
       firstPage.drawText(studentName, {
-        x: width / 2 - nameWidth / 2, // Center the name horizontally
-        y: height - 277, // Exact position for the name line
-        size: 24,
+        x: height * 0.35, // Centered horizontally - adjust this if needed
+        y: height * 0.53, // 62% from bottom - adjust this if needed
+        size: width * 0.04, // Font size relative to page width
         font: timesBold,
-        color: rgb(0.2, 0.4, 0.8), // Blue color to match template
+        color: rgb(0.2, 0.4, 0.8), // Blue color
       });
-      
-      // Course Name - positioned in the blank after "has successfully participated in"
-      firstPage.drawText('AI Prompting ', {
-        x: 445, // Right after "has successfully participated in "
-        y: height - 307, // Same line as the participation text
-        size: 14,
+
+      // Course Name - positioned in the course participation line
+      firstPage.drawText('AI Prompting', {
+        x: width * 0.51, // Position after "has successfully participated in"
+        y: height * 0.48, // Course field position
+        size: width * 0.018,
         font: helveticaBold,
-        color: rgb(0.2, 0.4, 0.8), // Blue color to match
+        color: rgb(0.2, 0.4, 0.8),
       });
-      
-      // Institution - positioned in the blank after "at"
+
+      // Instructor Name - after "Google Student Ambassador"
+      firstPage.drawText('Rahul Jadhav', {
+        x: width * 0.59, // Position after "Google Student Ambassador"
+        y: height * 0.45,
+        size: width * 0.018,
+        font: helvetica,
+        color: black,
+      });
+
+      // Institution - after "at"
       firstPage.drawText('VPPCOE & VA', {
-        x: 280, // Right after "at " 
-        y: height - 347, // Same line as "at"
-        size: 14,
+        x: width * 0.28, // Position after "at"
+        y: height * 0.42,
+        size: width * 0.016,
         font: helvetica,
         color: black,
       });
-      
-      // Instructor - positioned in the blank after "Conducted by"  
-      firstPage.drawText('Rahul Jadhav', {
-        x: 485, // Right after "Conducted by " text
-        y: height - 327, // Same line as "Conducted by"
-        size: 14,
-        font: helvetica,
-        color: black,
-      });
-      
-      // Date - positioned to replace the existing "06-09-2025" date
-      const today = new Date().toLocaleDateString('en-GB');
-      
-      firstPage.drawText(today, {
-        x: 210, // Position where "06-09-2025" appears
-        y: height - 442, // Exact date field position
-        size: 14,
+
+      // Date - in the date field
+      const currentDate = new Date().toLocaleDateString('en-GB'); // DD/MM/YYYY format
+      firstPage.drawText(currentDate, {
+        x: width * 0.24, // Left side date field
+        y: height * 0.25,
+        size: width * 0.018,
         font: helveticaBold,
         color: black,
       });
-      // Instructor - positioned in the blank after "Conducted by"  
+
+      // Additional Instructor at bottom (if needed)
       firstPage.drawText('Rahul Jadhav', {
-        x: 545, // Right after "Conducted by " text
-        y: height - 452, // Same line as "Conducted by"
-        size: 14,
+        x: width * 0.64, // Right side for signature
+        y: height * 0.25,
+        size: width * 0.022,
         font: helvetica,
         color: black,
       });
