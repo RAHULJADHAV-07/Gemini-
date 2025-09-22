@@ -56,15 +56,34 @@ const App = () => {
   };
 
   /**
-   * Handle lesson click - opens lesson in new tab and marks as completed
+   * Handle lesson click - opens lesson and marks as completed
    */
   const handleLessonClick = (lesson) => {
-    // Open lesson in new tab
-    window.open(lesson.url, '_blank');
-    
-    // Mark lesson as completed
+    // Mark lesson as completed first
     const newCompleted = new Set([...completedLessons, lesson.id]);
     setCompletedLessons(newCompleted);
+    
+    // Mobile-friendly redirect handling
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // For mobile devices - use direct navigation to avoid popup blockers
+      setTimeout(() => {
+        window.location.href = lesson.url;
+      }, 100); // Small delay to ensure state is saved
+    } else {
+      // For desktop - try to open in new tab
+      try {
+        const newWindow = window.open(lesson.url, '_blank', 'noopener,noreferrer');
+        // If popup is blocked, fallback to same tab
+        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+          window.location.href = lesson.url;
+        }
+      } catch (error) {
+        // Fallback to same tab navigation
+        window.location.href = lesson.url;
+      }
+    }
   };
 
   /**
