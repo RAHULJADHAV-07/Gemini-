@@ -58,7 +58,7 @@ const CertificatePage = ({ studentName, onGoToLessons, onStartOver }) => {
       
       // **RESPONSIVE POSITIONING FOR ANY PDF SIZE**
       // Calculate responsive positions based on page dimensions
-      const centerX = width / 2;
+      // const centerX = width / 2;
       
       // Student Name - positioned where the blank line is in "This is to certify that [NAME]"
       firstPage.drawText(studentName, {
