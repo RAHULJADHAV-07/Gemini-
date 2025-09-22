@@ -63,26 +63,36 @@ const App = () => {
     const newCompleted = new Set([...completedLessons, lesson.id]);
     setCompletedLessons(newCompleted);
     
-    // Mobile-friendly redirect handling
+    // For mobile devices, we need to handle redirects differently
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
     if (isMobile) {
-      // For mobile devices - use direct navigation to avoid popup blockers
-      setTimeout(() => {
-        window.location.href = lesson.url;
-      }, 100); // Small delay to ensure state is saved
-    } else {
-      // For desktop - try to open in new tab
-      try {
-        const newWindow = window.open(lesson.url, '_blank', 'noopener,noreferrer');
-        // If popup is blocked, fallback to same tab
-        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+      // Mobile-specific handling
+      // Create a user-initiated action that mobile browsers trust
+      const openInNewTab = () => {
+        // Try opening in new tab first
+        const newWindow = window.open('', '_blank');
+        if (newWindow) {
+          newWindow.location.href = lesson.url;
+        } else {
+          // If popup blocked, use direct navigation
           window.location.href = lesson.url;
         }
-      } catch (error) {
-        // Fallback to same tab navigation
-        window.location.href = lesson.url;
-      }
+      };
+      
+      // Small delay to ensure state is saved, then execute
+      setTimeout(openInNewTab, 100);
+    } else {
+      // Desktop handling - create proper link element
+      const link = document.createElement('a');
+      link.href = lesson.url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      
+      // Add to document, click, and remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   };
 
