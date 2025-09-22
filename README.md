@@ -4,7 +4,7 @@ A comprehensive, interactive web application designed to teach students the art 
 
 ## 🌐 Live Demo
 
-**[View Live Application](https://gemini-p1v7.onrender.com)**
+**[View Live Application](https://geminilearning.netlify.app)**
 
 ## 📋 Table of Contents
 
